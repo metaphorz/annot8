@@ -10,6 +10,11 @@ outputs/
 # Server state
 .server.pid
 
+# Environment / secrets — never commit
+.env
+.env.*
+*.env
+
 # Test run artifacts (the test_*.py scripts are tracked; their output is not)
 tests/auto/*.png
 tests/auto/*.log
