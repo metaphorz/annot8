@@ -1,6 +1,6 @@
 "use strict";
 /*
- * app.js — LLM PDF Annotator, 100% client-side build for GitHub Pages.
+ * app.js — ANNOT8, 100% client-side build for GitHub Pages.
  * Renders with pdf.js, OCRs with Tesseract.js, annotates with pdf-lib.
  * No backend — the PDF never leaves the browser.
  *
@@ -535,7 +535,7 @@ async function apiChat(question, scope, color) {
         "Authorization": "Bearer " + key,
         "Content-Type": "application/json",
         "HTTP-Referer": location.origin,
-        "X-Title": "LLM PDF Annotator",
+        "X-Title": "ANNOT8",
       },
       body: JSON.stringify({
         model: $("modelSelect").value,

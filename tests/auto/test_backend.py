@@ -1,5 +1,5 @@
 """
-test_backend.py — end-to-end checks for the LLM PDF Annotator backend.
+test_backend.py — end-to-end checks for the ANNOT8 backend.
 
 Run:  venv/bin/python tests/auto/test_backend.py
 Covers: upload, page render, native-text annotation, OCR annotation

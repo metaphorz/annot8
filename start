@@ -1,5 +1,5 @@
 #!/bin/zsh
-# Start the LLM PDF Annotator server.
+# Start the ANNOT8 server.
 cd "$(dirname "$0")"
 if [ -f .server.pid ] && kill -0 $(cat .server.pid) 2>/dev/null; then
   echo "Already running (PID $(cat .server.pid)) — http://127.0.0.1:5050"

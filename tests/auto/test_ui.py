@@ -1,5 +1,5 @@
 """
-test_ui.py — Selenium UI test for the LLM PDF Annotator.
+test_ui.py — Selenium UI test for ANNOT8.
 Requires the server running (./start).
 
 Drives the browser: load page, upload a PDF, render, run a page-scope
