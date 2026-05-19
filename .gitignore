@@ -1,0 +1,22 @@
+# Python virtual environment
+venv/
+__pycache__/
+*.pyc
+
+# Runtime data — uploaded originals, working/annotated copies, OCR cache
+uploads/
+outputs/
+
+# Server state
+.server.pid
+
+# Test run artifacts (the test_*.py scripts are tracked; their output is not)
+tests/auto/*.png
+tests/auto/*.log
+
+# PDFs — input documents and generated samples are not tracked.
+# Remove this line if you want a sample PDF committed.
+*.pdf
+
+# macOS
+.DS_Store

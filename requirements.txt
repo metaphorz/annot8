@@ -1,0 +1,4 @@
+flask
+pymupdf
+requests
+python-dotenv

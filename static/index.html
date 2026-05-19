@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM PDF Annotator</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header>
+  <h1>LLM&nbsp;PDF&nbsp;Annotator</h1>
+  <span id="docName" class="doc-name">No document loaded</span>
+  <span id="annCount" class="ann-count"></span>
+  <button id="exportBtn" disabled>Export annotated PDF</button>
+</header>
+
+<main>
+  <!-- ===== Left: PDF viewer ===== -->
+  <section id="viewer">
+    <div id="dropZone" class="drop-zone">
+      <p><strong>Drag &amp; drop a PDF here</strong></p>
+      <p>or</p>
+      <button id="pickBtn">Choose a file</button>
+      <input type="file" id="fileInput" accept="application/pdf" hidden>
+    </div>
+
+    <div id="pageArea" class="page-area hidden">
+      <div class="page-bar">
+        <button id="prevBtn">&#8249; Prev</button>
+        <span id="pageInfo">Page 1 / 1</span>
+        <button id="nextBtn">Next &#8250;</button>
+        <span class="spacer"></span>
+        <button id="zoomOut">&minus;</button>
+        <span id="zoomInfo">150%</span>
+        <button id="zoomIn">+</button>
+      </div>
+      <div class="page-scroll">
+        <img id="pageImg" alt="PDF page">
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Right: controls + chat ===== -->
+  <section id="sidebar">
+    <div class="controls">
+      <label>LLM access
+        <select id="modeSelect">
+          <option value="copypaste">Copy &amp; paste into my own LLM</option>
+          <option value="api">OpenRouter API key</option>
+        </select>
+      </label>
+      <label id="apiKeyRow" class="hidden">OpenRouter API key
+        <input type="password" id="apiKey" placeholder="sk-or-...">
+      </label>
+      <label id="modelRow" class="hidden">Model
+        <select id="modelSelect"></select>
+      </label>
+      <label>Ask questions about
+        <select id="scopeSelect">
+          <option value="document">The whole document</option>
+          <option value="page">Just the current page</option>
+        </select>
+      </label>
+      <label id="fullTextRow" class="checkbox-label">
+        <input type="checkbox" id="fullText">
+        Embed the full document text in the prompt (otherwise attach the PDF
+        file in your chat)
+      </label>
+      <label>Annotation tool
+        <select id="toolSelect"></select>
+      </label>
+      <div class="color-cycle">
+        Each question's annotations use the next colour:
+        <span id="colorLegend"></span>
+      </div>
+    </div>
+
+    <div id="chat" class="chat"></div>
+
+    <div class="composer">
+      <textarea id="chatInput" rows="2"
+        placeholder="Load a PDF, then ask the LLM about it..."></textarea>
+      <button id="sendBtn">Send</button>
+    </div>
+  </section>
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+#!/bin/zsh
+# Start the LLM PDF Annotator server.
+cd "$(dirname "$0")"
+if [ -f .server.pid ] && kill -0 $(cat .server.pid) 2>/dev/null; then
+  echo "Already running (PID $(cat .server.pid)) — http://127.0.0.1:5050"
+  exit 0
+fi
+venv/bin/python app.py > tests/auto/server.log 2>&1 &
+echo $! > .server.pid
+sleep 1
+echo "Server started (PID $(cat .server.pid)) — http://127.0.0.1:5050"
+echo "Logs: tests/auto/server.log"
