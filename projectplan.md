@@ -147,3 +147,51 @@ Other refinements this phase:
 - `test_backend.py` — 29/29 (incl. build-prompt / parse-reply).
 - `test_ui.py` — 9/9 Selenium: copy/paste flow (canned reply, colour cycle)
   + OpenRouter API mode.
+
+## Phase 4 (planned) — static, browser-only build for GitHub Pages
+Goal: a 100% client-side version in `docs/` so GitHub Pages serves a working
+site (no Python backend). The Flask app stays at the repo root for local use.
+Repo pushed to https://github.com/metaphorz/annot8.
+
+Confirmed with user: all 10 annotation tools; both LLM modes (copy/paste + API).
+
+Libraries (CDN, no build step): **pdf.js** (render + native text), **Tesseract.js**
+(in-browser OCR), **pdf-lib** (write annotations into the PDF).
+
+Architecture:
+- The PDF is held in memory (FileReader). pdf.js renders pages; pdf-lib holds
+  the working copy that accumulates annotations; export = `pdf-lib` save.
+- On-screen annotations shown via an HTML overlay layer; the exported PDF
+  carries real pdf-lib annotation objects (same {page, rect, tool, colour} data).
+- The fuzzy quote-matcher is ported from `annotator.py` to JS.
+
+Known constraint: in-browser OCR is slow, so for *scanned* PDFs OCR runs
+per-page on demand; whole-document scope is best for native-text PDFs.
+
+### To-do — Phase 4 (COMPLETE)
+- [x] 1. `docs/` scaffolding — index.html, style.css, app.js, matcher.js,
+      annotator.js
+- [x] 2. PDF load (FileReader) + pdf.js render + page nav / zoom
+- [x] 3. Native text extraction via pdf.js text layer → word boxes
+- [x] 4. OCR fallback — Tesseract.js per page, pixel→PDF coordinate mapping
+- [x] 5. Port the fuzzy matcher (matchQuote / findQuoteQuads / locate) to JS
+- [x] 6. Annotation engine in pdf-lib — all 10 Acrobat-style tools + colours
+- [x] 7. On-canvas drawing for live annotation display
+- [x] 8. Copy/paste LLM flow (build prompt, paste reply, parse) — client-side
+- [x] 9. OpenRouter API mode — browser fetch, key in localStorage
+- [x] 10. Per-question colour cycling, auto-annotate, annotation count
+- [x] 11. Export annotated PDF (pdf-lib save → download)
+- [x] 12. Enable GitHub Pages (main branch, /docs)
+- [x] 13. Selenium test of the static build — `test_static.py` 10/10
+
+### Review — Phase 4
+- The static app lives in `docs/`; the Flask app stays at the repo root.
+- **Libraries are vendored** in `docs/vendor/` (pdf.js, pdf-lib, Tesseract.js)
+  — no external CDN, so it works offline and behind corporate proxies.
+- Tesseract.js is lazy-loaded only when a scanned page needs OCR, so the page
+  never blocks on it and native-text PDFs work without it.
+- Caveat: Tesseract's runtime assets (WASM core + language data) still load
+  from a CDN on first OCR use — native-text PDFs are fully self-contained;
+  full OCR vendoring can come later.
+- `test_static.py` — 10/10 Selenium against the browser-only build (load,
+  render, copy/paste flow, colour cycle, export with real annotations).
