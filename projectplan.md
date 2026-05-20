@@ -208,3 +208,10 @@ Driven by an enterprise requirement: nothing the user enters may leak.
   internal server so even page load never contacts GitHub.
 - API mode kept as-is (opt-in; the default copy/paste mode never uses it).
 - Renamed to **ANNOT8 — crafted by Paul Fishwick & Claude Code**.
+
+## Phase 6 — LaTeX documentation
+- `report+slides/annot8-report.tex` → `annot8-report.pdf` (7 pages): a thorough
+  project report — architecture, fuzzy matcher, annotation engine, LLM modes,
+  the browser-only build, the security/data-leak analysis, and testing.
+- Figures captured with Selenium (`report+slides/figures/`) plus a TikZ
+  architecture diagram and the annotated patent page.

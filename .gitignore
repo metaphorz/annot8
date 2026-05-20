@@ -22,6 +22,14 @@ tests/auto/*.log
 # PDFs — input documents and generated samples are not tracked.
 # Remove this line if you want a sample PDF committed.
 *.pdf
+# ...but the compiled LaTeX report is a deliverable and IS tracked.
+!report+slides/annot8-report.pdf
+
+# LaTeX build artifacts
+*.aux
+*.toc
+report+slides/*.log
+report+slides/*.out
 
 # macOS
 .DS_Store
