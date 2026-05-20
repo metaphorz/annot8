@@ -210,8 +210,10 @@ Driven by an enterprise requirement: nothing the user enters may leak.
 - Renamed to **ANNOT8 — crafted by Paul Fishwick & Claude Code**.
 
 ## Phase 6 — LaTeX documentation
-- `report+slides/annot8-report.tex` → `annot8-report.pdf` (7 pages): a thorough
+- `docs/report/annot8-report.tex` → `annot8-report.pdf` (7 pages): a thorough
   project report — architecture, fuzzy matcher, annotation engine, LLM modes,
   the browser-only build, the security/data-leak analysis, and testing.
-- Figures captured with Selenium (`report+slides/figures/`) plus a TikZ
+- Figures captured with Selenium (`docs/report/figures/`) plus a TikZ
   architecture diagram and the annotated patent page.
+- Placed under `docs/` (this project's convention) — note `docs/` is also the
+  GitHub Pages root, so the report is viewable at the live URL under /report/.
