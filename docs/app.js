@@ -10,8 +10,12 @@
 pdfjsLib.GlobalWorkerOptions.workerSrc = "vendor/pdf.worker.min.js";
 
 // Tesseract.js (OCR) is loaded only when a scanned page needs it, so the
-// page never blocks on it and native-text PDFs work without it.
+// page never blocks on it and native-text PDFs work without it. The engine,
+// WASM core and language data are all vendored under vendor/tesseract/ —
+// OCR makes zero external network requests.
 let tesseractLoading = null;
+let ocrWorker = null;
+
 function ensureTesseract() {
   if (window.Tesseract) return Promise.resolve();
   if (tesseractLoading) return tesseractLoading;
@@ -23,6 +27,31 @@ function ensureTesseract() {
     document.head.appendChild(s);
   });
   return tesseractLoading;
+}
+
+async function getOcrWorker() {
+  if (ocrWorker) return ocrWorker;
+  await ensureTesseract();
+  // Absolute URLs so the OCR Web Worker resolves the vendored assets
+  // relative to the page, not to itself.
+  const tdir = new URL("vendor/tesseract/", document.baseURI).href;
+  ocrWorker = await Tesseract.createWorker("eng", 1, {
+    workerPath: tdir + "worker.min.js",
+    corePath: tdir,
+    langPath: tdir,
+  });
+  return ocrWorker;
+}
+
+// Flatten Tesseract's result to a flat word list across v4/v5 shapes.
+function tessWords(data) {
+  if (data.words && data.words.length) return data.words;
+  const out = [];
+  (data.blocks || []).forEach((b) =>
+    (b.paragraphs || []).forEach((p) =>
+      (p.lines || []).forEach((l) =>
+        (l.words || []).forEach((w) => out.push(w)))));
+  return out;
 }
 
 // ---- State ----------------------------------------------------------------
@@ -337,7 +366,7 @@ async function nativeWords(page) {
 }
 
 async function ocrWords(page) {
-  await ensureTesseract();
+  const worker = await getOcrWorker();
   const scale = 2;
   const vp = page.getViewport({ scale: scale });
   const cv = document.createElement("canvas");
@@ -345,11 +374,11 @@ async function ocrWords(page) {
   cv.height = vp.height;
   await page.render({ canvasContext: cv.getContext("2d"), viewport: vp })
     .promise;
-  const res = await Tesseract.recognize(cv, "eng");
+  const res = await worker.recognize(cv, {}, { blocks: true });
   const pageHeight = page.getViewport({ scale: 1 }).height;
   const words = [];
-  (res.data.words || []).forEach((w) => {
-    if (!w.text || !w.text.trim()) return;
+  tessWords(res.data).forEach((w) => {
+    if (!w.text || !w.text.trim() || !w.bbox) return;
     const b = w.bbox;
     words.push({
       text: w.text,

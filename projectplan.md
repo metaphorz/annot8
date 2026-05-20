@@ -195,3 +195,16 @@ per-page on demand; whole-document scope is best for native-text PDFs.
   full OCR vendoring can come later.
 - `test_static.py` — 10/10 Selenium against the browser-only build (load,
   render, copy/paste flow, colour cycle, export with real annotations).
+
+## Phase 5 — enterprise data-leak hardening
+Driven by an enterprise requirement: nothing the user enters may leak.
+- **Audit:** the only `fetch()` in the static app is the OpenRouter call
+  (API mode only). Empirical capture of a full copy/paste session: every
+  request went to the page's own host — zero third-party traffic.
+- **Tesseract fully vendored:** worker, WASM core (SIMD/LSTM), and English
+  language data live in `docs/vendor/tesseract/`. OCR of a scanned PDF makes
+  zero external requests (verified by network capture on the patent).
+- **Self-hosting guide:** `SELF-HOSTING.md` — how to run `docs/` on an
+  internal server so even page load never contacts GitHub.
+- API mode kept as-is (opt-in; the default copy/paste mode never uses it).
+- Renamed to **ANNOT8 — crafted by Paul Fishwick & Claude Code**.
