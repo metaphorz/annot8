@@ -213,7 +213,10 @@ Driven by an enterprise requirement: nothing the user enters may leak.
 - `docs/report/annot8-report.tex` → `annot8-report.pdf` (7 pages): a thorough
   project report — architecture, fuzzy matcher, annotation engine, LLM modes,
   the browser-only build, the security/data-leak analysis, and testing.
+- `docs/report/annot8-slides.tex` → `annot8-slides.pdf` (6 frames, 16:9
+  Beamer) + `annot8-slides.pptx` (300 DPI, per the LaTeX convention).
 - Figures captured with Selenium (`docs/report/figures/`) plus a TikZ
   architecture diagram and the annotated patent page.
 - Placed under `docs/` (this project's convention) — note `docs/` is also the
-  GitHub Pages root, so the report is viewable at the live URL under /report/.
+  GitHub Pages root, so the report and slides are viewable at the live URL
+  under /report/.
